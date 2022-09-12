@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useState, useEffect } from "react"
 
-function RegisterCustomer(){
+function RegisterVendor(){
 
     const [stateList, setStateList] = useState([]);
     const [cityList, setCityList] = useState([]);
@@ -14,6 +14,7 @@ function RegisterCustomer(){
     const [contactNoMsg,setContactNoMsg] = useState("");
     const [validateBool, setValidateBool] = useState(true);
     const [password, setPassword] = useState("");
+    const [servicList, setServiceList] = useState([]);
 
     const AuthToken = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJfZW1haWwiOiJnYXVyYW5nLnMxNTNAZ21haWwuY29tIiwiYXBpX3Rva2VuIjoiY0VjQTJTRGhNUnRMQW0xWTQ1M0hhU1dhamQ0aElORHFHUnBucW5XRndDSVZFUGV2MGd4NHBBRHVCVExmTlNnVkRQdyJ9LCJleHAiOjE2NjMwNjkyOTB9.Qr42qXCDGhKVpby4PVZHRd-M0XnYbey8zWjN85r6swI";
     useEffect(()=>{
@@ -24,7 +25,7 @@ function RegisterCustomer(){
             }
         }).then(response => setStateList(response.data)).catch(err=> console.log(err));
 
-        
+        axios.get("http://localhost:8080/reg/list").then(response=> setServiceList(response.data)).catch(err=>console.error(err));
     })
 
 
@@ -199,4 +200,4 @@ function RegisterCustomer(){
     )
 }
 
-export default RegisterCustomer;
+export default RegisterVendor;
