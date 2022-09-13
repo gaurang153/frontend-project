@@ -1,5 +1,7 @@
 import axios from "axios"
+import * as cities from '../Assets/States_Cities.json'
 import { useState, useEffect } from "react"
+import Select from "react-select"
 
 function RegisterVendor(){
 
@@ -15,6 +17,9 @@ function RegisterVendor(){
     const [validateBool, setValidateBool] = useState(true);
     const [password, setPassword] = useState("");
     const [servicList, setServiceList] = useState([]);
+    const [selectServices, setSelectedService] = useState([]);
+    var serviceArr = [];
+    var selectedServiceArr = [];
 
     const AuthToken = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJfZW1haWwiOiJnYXVyYW5nLnMxNTNAZ21haWwuY29tIiwiYXBpX3Rva2VuIjoiY0VjQTJTRGhNUnRMQW0xWTQ1M0hhU1dhamQ0aElORHFHUnBucW5XRndDSVZFUGV2MGd4NHBBRHVCVExmTlNnVkRQdyJ9LCJleHAiOjE2NjMwNjkyOTB9.Qr42qXCDGhKVpby4PVZHRd-M0XnYbey8zWjN85r6swI";
     useEffect(()=>{
@@ -25,13 +30,19 @@ function RegisterVendor(){
             }
         }).then(response => setStateList(response.data)).catch(err=> console.log(err));
 
-        axios.get("http://localhost:8080/reg/list").then(response=> setServiceList(response.data)).catch(err=>console.error(err));
-    })
+    }, [])
+
+    useEffect(()=> {
+        axios.get("http://localhost:8080/reg/list").then(response=> response.data.map(s=> serviceArr.push({ value:s, label:s })) ).catch(err=>console.error(err));
+        setServiceList(serviceArr);
+    }, [])
 
 
     function handleSubmit(e){
         e.preventDefault();
-        const customer = {
+        console.log("in handle Submit")
+        console.log(selectedServiceArr)
+        const vendor = {
             email : e.target.email.value,
             password : e.target.password.value,
             name : e.target.name.value,
@@ -39,10 +50,11 @@ function RegisterVendor(){
             address : e.target.addressLine1.value + " " + e.target.addressLine2.value,
             city : e.target.city.value,
             state : e.target.state.value,
-            pincode : e.target.pincode.value
+            pincode : e.target.pincode.value,
+            serviceEnums: selectServices
         }
 
-        axios.post("http://localhost:8080/reg/customer", customer).then(function (response) {
+        axios.post("http://localhost:8080/reg/vendor", vendor).then(function (response) {
             console.log(response);
           })
           .catch(function (error) {
@@ -52,18 +64,21 @@ function RegisterVendor(){
 
     function handleChange(e){
 
-        axios.get('https://www.universal-tutorial.com/api/cities/'+e.target.value, {
-            headers : {
-                "Accept" : "application/json",
-                "Authorization" : AuthToken
-            }
-        }).then(response => setCityList(response.data)).catch(err => console.error(err))
+        e.preventDefault();
+        setCityList(cities[e.target.value]) 
     }
 
+    function handleChangeSelect(selected){
+        selectedServiceArr = [];
+        selected.map( selectedOption => selectedServiceArr.push(selectedOption.value) )
+        console.log(selectedServiceArr)
+        setSelectedService(selectedServiceArr)
+
+    }
 
     return(
         <div className="container-fluid">
-            <h2>Register Page</h2>
+            <h2>Register Page Vendor</h2>
             <form onSubmit={handleSubmit} method="post" className="form-control">
                 <div className="row g-3 mb-3">
                     <label htmlFor="Email" className="col-1">Email</label>
@@ -87,7 +102,8 @@ function RegisterVendor(){
                 <div className="row g-3 mb-3">
                     <label htmlFor="Password" className="col-1">Password</label>
                     <input type="password" name="password" id="password" className="col-auto" onBlur={(e) => {
-                        if(/((?=.\d)(?=.[a-z])(?=.[#@$]).{5,20})/.test(e.target.value)){
+                        // /((?=.\d)(?=.[a-z])(?=.[#@$]).{5,20})/.test(e.target.value)
+                        if(true){
                             setValidateBool(validateBool&&true);
                             setPassword(e.target.value);
                             setPasswordMsg("")
@@ -129,6 +145,18 @@ function RegisterVendor(){
                         <span className="text-danger col-1">{nameMsg}</span>
                 </div>
                 <div className="row g-3 mb-3">
+                    <label htmlFor="Services" className="col-1">Services</label>
+                    {/* <select name="service" id="services" multiple={true} className="col-1">
+                        {servicList.map((elem)=>
+                            <option key={elem} value={elem}>{elem}</option>
+                        )}
+                    </select> */}
+                    <div className="col-auto">
+                        <Select options={servicList} isMulti onChange={handleChangeSelect}/>
+
+                    </div>
+                </div>
+                <div className="row g-3 mb-3">
                     <label htmlFor="Address Line 1" className="col-1">Address Line 1</label>
                     <input type="text" name="addressLine1" id="addressLine1" className="col-auto" onBlur={(e)=> {
                         if(e.target.value) {
@@ -155,11 +183,12 @@ function RegisterVendor(){
                             )}
                     </select>
                 </div>
+                
                 <div className="row g-3 mb-3">
                     <label htmlFor="City" className="col-1">City</label>
                     <select name="city" id="city" className="col-1">
                         {cityList.map(elem => 
-                            <option value={elem.city_name}>{elem.city_name}</option>
+                            <option key={elem.id} value={elem.city}>{elem.city}</option>
                             )}
                     </select>
                 </div>

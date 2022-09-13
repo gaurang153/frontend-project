@@ -1,4 +1,5 @@
 import axios from "axios"
+import * as cities from '../Assets/States_Cities.json'
 import { useState, useEffect } from "react"
 
 function RegisterCustomer(){
@@ -24,8 +25,9 @@ function RegisterCustomer(){
             }
         }).then(response => setStateList(response.data)).catch(err=> console.log(err));
 
+        console.log(cities);
         
-    })
+    }, [])
 
 
     function handleSubmit(e){
@@ -50,19 +52,14 @@ function RegisterCustomer(){
     }
 
     function handleChange(e){
-
-        axios.get('https://www.universal-tutorial.com/api/cities/'+e.target.value, {
-            headers : {
-                "Accept" : "application/json",
-                "Authorization" : AuthToken
-            }
-        }).then(response => setCityList(response.data)).catch(err => console.error(err))
+        e.preventDefault();
+        setCityList(cities[e.target.value]) 
     }
 
 
     return(
         <div className="container-fluid">
-            <h2>Register Page</h2>
+            <h2>Register Page Customer</h2>
             <form onSubmit={handleSubmit} method="post" className="form-control">
                 <div className="row g-3 mb-3">
                     <label htmlFor="Email" className="col-1">Email</label>
@@ -86,7 +83,8 @@ function RegisterCustomer(){
                 <div className="row g-3 mb-3">
                     <label htmlFor="Password" className="col-1">Password</label>
                     <input type="password" name="password" id="password" className="col-auto" onBlur={(e) => {
-                        if(/((?=.\d)(?=.[a-z])(?=.[#@$]).{5,20})/.test(e.target.value)){
+                        // /((?=.\d)(?=.[a-z])(?=.[#@$]).{5,20})/.test(e.target.value)
+                        if(true){
                             setValidateBool(validateBool&&true);
                             setPassword(e.target.value);
                             setPasswordMsg("")
@@ -150,7 +148,7 @@ function RegisterCustomer(){
                     <label htmlFor="State" className="col-1">State</label>
                     <select name="state" id="state" className="col-1" onChange={handleChange}>
                         {stateList.map(elem => 
-                            <option value={elem.state_name}>{elem.state_name}</option>
+                            <option key={elem.state_name} value={elem.state_name}>{elem.state_name}</option>
                             )}
                     </select>
                 </div>
@@ -158,7 +156,7 @@ function RegisterCustomer(){
                     <label htmlFor="City" className="col-1">City</label>
                     <select name="city" id="city" className="col-1">
                         {cityList.map(elem => 
-                            <option value={elem.city_name}>{elem.city_name}</option>
+                            <option key={elem.id} value={elem.city}>{elem.city}</option>
                             )}
                     </select>
                 </div>
@@ -191,7 +189,7 @@ function RegisterCustomer(){
                     <span className="text-danger col-1">{contactNoMsg}</span>
                 </div>
                 <div className="row g-3 mb-3">
-                    <input type="submit" value="Register" className="btn-primary col-1" disabled={!validateBool}/>
+                    <input type="submit" value="Register" className="btn-primary col-1" />
                 </div>
 
             </form>

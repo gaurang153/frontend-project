@@ -1,5 +1,5 @@
 
-function Select(props) {
+function SelectTemp(props) {
 
     return(
         <div className="col-auto">
@@ -15,4 +15,4 @@ function Select(props) {
     )
 }
 
-export default Select
+export default SelectTemp
