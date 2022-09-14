@@ -3,7 +3,7 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 
 
-function VendorLogin() {
+function CustomerLogin() {
 
     const [emailMsg, setEmailMsg] = useState("");
     const [passwordMsg, setPasswordMsg] = useState("");
@@ -17,7 +17,7 @@ function VendorLogin() {
             password : e.target.password.value
         }
 
-        axios.post("http://localhost:8080/login/vendor", user)
+        axios.post("http://localhost:8080/login/customer", user)
         .then(response=> {
             if(response.status === 200)
                 window.location = '/reg/vendor'
@@ -31,7 +31,7 @@ function VendorLogin() {
     return(
 
         <div className='container-fluid'>
-            <h2 className='text-center mb-5'>Vendor Login</h2>
+            <h2 className='text-center mb-5'>Customer Login</h2>
             <span className='text-center'>{authMessage}</span>
             <form onSubmit={handleSubmit} method="post">
             <div className="row g-3 mb-3 justify-content-center">
@@ -70,11 +70,11 @@ function VendorLogin() {
                     <input type="submit" value="Login" className="btn-primary col-1" />
                 </div>
                 <div className='row'>
-                        <span className='text-center'>New Vendor? Register <Link to="/reg/vendor">Here</Link> </span>
+                        <span className='text-center'>New Customer? Register <Link to="/reg/customer">Here</Link> </span>
                 </div>
             </form>
         </div>
     )
 }
 
-export default VendorLogin;
+export default CustomerLogin;
