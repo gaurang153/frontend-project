@@ -79,6 +79,7 @@ function RegisterVendor(){
     return(
         <div className="container-fluid">
             <h2>Register Page Vendor</h2>
+            
             <form onSubmit={handleSubmit} method="post" className="form-control">
                 <div className="row g-3 mb-3">
                     <label htmlFor="Email" className="col-1">Email</label>
@@ -225,6 +226,8 @@ function RegisterVendor(){
                 </div>
 
             </form>
+            
+            
         </div>
     )
 }

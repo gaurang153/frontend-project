@@ -1,18 +1,24 @@
 
-import { useState } from "react";
 import RegisterCustomer from "./Register/RegisterCustomer";
 import RegisterVendor from "./Register/RegisterVendor";
+import { Routes, Route} from 'react-router-dom';
+import VendorLogin from "./Login/VendorLogin";
+import HomePage from "./HomePage";
 
 function App() {
 
-  const [toggleComponant, setToggleComponant] = useState(true);
-
   return (
     <div>
-      <button onClick={()=> setToggleComponant(!toggleComponant) }>Toggle</button>
-      {toggleComponant? <RegisterCustomer/> : <RegisterVendor/>}
+
+      <HomePage/>
+      <Routes>
+        <Route path="/login/vendor" element={<VendorLogin/>}/>
+        <Route path="/reg/customer" element={<RegisterCustomer/>}/>
+        <Route path="/reg/vendor" element={<RegisterVendor/>}/>
+      </Routes>
       
       
+
     </div>
   );
 }
