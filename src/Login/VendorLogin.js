@@ -3,6 +3,8 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 
 
+
+
 function VendorLogin() {
 
     const [emailMsg, setEmailMsg] = useState("");
@@ -17,10 +19,13 @@ function VendorLogin() {
             password : e.target.password.value
         }
 
-        axios.post("http://localhost:8080/login/vendor", user)
+        axios.post("http://localhost:8080/login/vendor", user, { headers : { 'Content-type' : 'application/json'}})
         .then(response=> {
-            if(response.status === 200)
-                window.location = '/reg/vendor'
+            if(response.status === 200){ 
+                localStorage.setItem("authVendor", JSON.stringify(response.data))
+                window.location = "/dashboard/vendor"
+            }
+
         })
         .catch(err=> {
             console.log(err)
@@ -71,6 +76,9 @@ function VendorLogin() {
                 </div>
                 <div className='row'>
                         <span className='text-center'>New Vendor? Register <Link to="/reg/vendor">Here</Link> </span>
+                </div>
+                <div className='row'>
+                        <span className='text-center'><Link to="/login/customer">Customer Login </Link> </span>
                 </div>
             </form>
         </div>

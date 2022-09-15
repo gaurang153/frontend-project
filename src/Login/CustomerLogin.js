@@ -1,26 +1,38 @@
 import { useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { Button } from '@mui/material'
 
 
 function CustomerLogin() {
 
+    const navigate = useNavigate();
     const [emailMsg, setEmailMsg] = useState("");
     const [passwordMsg, setPasswordMsg] = useState("");
     const [authMessage, setAuthMessage] = useState("");
 
     function handleSubmit(e){
+        
+
         e.preventDefault();
+
 
         const user = {
             email : e.target.email.value,
             password : e.target.password.value
         }
 
-        axios.post("http://localhost:8080/login/customer", user)
+        axios.post("http://localhost:8080/login/customer", user, { headers : {
+            'Content-Type' : 'application/json'
+        }})
         .then(response=> {
-            if(response.status === 200)
-                window.location = '/reg/vendor'
+            if(response.status === 200){
+                localStorage.setItem("customer" ,JSON.stringify(response.data))
+                // window.location = '/dashboard/customer'
+                navigate("/dashboard/customer")
+
+            }
         })
         .catch(err=> {
             console.log(err)
@@ -31,8 +43,9 @@ function CustomerLogin() {
     return(
 
         <div className='container-fluid'>
+            
             <h2 className='text-center mb-5'>Customer Login</h2>
-            <span className='text-center'>{authMessage}</span>
+            <div className='row'><div className='text-danger text-center'>{authMessage}</div></div>
             <form onSubmit={handleSubmit} method="post">
             <div className="row g-3 mb-3 justify-content-center">
                     <label htmlFor="Email" className="col-1 text-end">Email</label>
@@ -71,6 +84,9 @@ function CustomerLogin() {
                 </div>
                 <div className='row'>
                         <span className='text-center'>New Customer? Register <Link to="/reg/customer">Here</Link> </span>
+                </div>
+                <div className='row'>
+                        <span className='text-center'><Link to="/login/vendor">Vendor Login </Link> </span>
                 </div>
             </form>
         </div>

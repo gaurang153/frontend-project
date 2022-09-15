@@ -4,12 +4,18 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from 'react-router-dom'
+import { VendorProvider } from './Context/VendorContext';
+import Navbar from './Layout/Navbar';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-    <App />
+    <VendorProvider>
+     <Navbar/>
+      <App />
+    </VendorProvider>
+    
     </BrowserRouter>
   </React.StrictMode>
 );

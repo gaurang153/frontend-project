@@ -2,6 +2,7 @@ import axios from "axios"
 import * as cities from '../Assets/States_Cities.json'
 import { useState, useEffect } from "react"
 import Select from "react-select"
+import { useNavigate } from 'react-router-dom'
 
 function RegisterVendor(){
 
@@ -20,6 +21,7 @@ function RegisterVendor(){
     const [selectServices, setSelectedService] = useState([]);
     var serviceArr = [];
     var selectedServiceArr = [];
+    const navigate = useNavigate();
 
     const AuthToken = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJfZW1haWwiOiJnYXVyYW5nLnMxNTNAZ21haWwuY29tIiwiYXBpX3Rva2VuIjoiY0VjQTJTRGhNUnRMQW0xWTQ1M0hhU1dhamQ0aElORHFHUnBucW5XRndDSVZFUGV2MGd4NHBBRHVCVExmTlNnVkRQdyJ9LCJleHAiOjE2NjMwNjkyOTB9.Qr42qXCDGhKVpby4PVZHRd-M0XnYbey8zWjN85r6swI";
     useEffect(()=>{
@@ -29,6 +31,7 @@ function RegisterVendor(){
                 "Authorization" : AuthToken
             }
         }).then(response => setStateList(response.data)).catch(err=> console.log(err));
+        
 
     }, [])
 
@@ -55,7 +58,8 @@ function RegisterVendor(){
         }
 
         axios.post("http://localhost:8080/reg/vendor", vendor).then(function (response) {
-            console.log(response);
+             if(response.status === 200)
+                navigate("/login/vendor")
           })
           .catch(function (error) {
             console.log(error);
