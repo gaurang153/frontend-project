@@ -8,6 +8,12 @@ function EditCustomerProfile({ customer }) {
   const [buttonText, setButtonText] = useState("Edit");
   const [stateList, setStateList] = useState([]);
   const [cityList, setCityList] = useState([]);
+  const [validEmail, setValidEmail] = useState("");
+  const [validName, setValidName] = useState("")
+  const [validAddress, setValidAddress] = useState("");
+  const [validContact, setValidContact] = useState("");
+  const [validPincode, setValidPincode] = useState("");
+  const [formEdited, setFormEdited] = useState(false);
 
   useEffect(() => {
     setStateList(data["states"]);
@@ -16,11 +22,13 @@ function EditCustomerProfile({ customer }) {
 
   function handleChangeSelect(e) {
     setCityList(cities[e.target.value]);
+    setFormEdited(true);
   }
 
   function handleSubmit(e){
     e.preventDefault()
-    
+    setFormEdited(false)
+    console.log("form submitted")
   }
 
   return (
@@ -50,6 +58,18 @@ function EditCustomerProfile({ customer }) {
           defaultValue={customer.name}
           name="name"
           disabled={editToggle}
+          onBlur={(e)=>{
+            e.preventDefault()
+            if(!e.target.value){
+                setValidName("Name cannot be blank")
+            }else{
+              setValidName("")
+            }
+          
+          }}
+          error={validName}
+          helperText={validName}
+          onChange={()=> setFormEdited(true)}
         />
         </Grid>
 
@@ -62,6 +82,17 @@ function EditCustomerProfile({ customer }) {
           defaultValue={customer.email}
           name="email"
           disabled={editToggle}
+          onBlur={(e)=>{
+            e.preventDefault()
+            if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(e.target.value)){
+                setValidEmail("Invalid Email entry")
+            }else
+              setValidEmail("");
+          
+          }}
+          error={validEmail}
+          helperText={validEmail}
+          onChange={()=> setFormEdited(true)}
         />
         </Grid>
 
@@ -74,6 +105,17 @@ function EditCustomerProfile({ customer }) {
           defaultValue={customer.contactNo}
           disabled={editToggle}
           name="contactNo"
+          onBlur={(e)=>{
+            if(e.target.value.length<10 || e.target.value.length>10){
+              setValidContact("Invalid Contact No")
+            }
+            else{
+              setValidContact("");
+            }
+          }}
+          error={validContact}
+          helperText={validContact}
+          onChange={()=> setFormEdited(true)}
         />
         </Grid>
 
@@ -86,6 +128,18 @@ function EditCustomerProfile({ customer }) {
           defaultValue={customer.address}
           disabled={editToggle}
           name="address"
+          onBlur={(e)=>{
+            e.preventDefault()
+            if(!e.target.value){
+                setValidAddress("Address cannot be blank")
+            }else{
+              setValidAddress("")
+            }
+          
+          }}
+          error={validAddress}
+          helperText={validAddress}
+          onChange={()=> setFormEdited(true)}
         />
         </Grid>
 
@@ -97,6 +151,7 @@ function EditCustomerProfile({ customer }) {
           style={{ minWidth: 120 }}
           name="state"
           defaultValue={customer.state}
+          
         >
           {stateList.map((item) => {
             return (
@@ -107,7 +162,7 @@ function EditCustomerProfile({ customer }) {
         </Grid>
 
         <Grid item xs={12} sm={6}>
-        <Select label="City" disabled={editToggle} style={{ minWidth: 120 }} name="city" defaultValue={customer.city}>
+        <Select label="City" disabled={editToggle} style={{ minWidth: 120 }} name="city" defaultValue={customer.city} onChange={()=> setFormEdited(true)}>
           {cityList.map((item) => {
             return <MenuItem value={item.city}>{item.city}</MenuItem>;
           })}
@@ -123,18 +178,30 @@ function EditCustomerProfile({ customer }) {
           defaultValue={customer.pincode}
           disabled={editToggle}
           name="pincode"
+          onBlur={(e)=>{
+            if(e.target.value.length<6 || e.target.value.length>6){
+              setValidPincode("Invalid Pincode No")
+            }
+            else{
+              setValidPincode("");
+            }
+          }}
+          error={validPincode}
+          helperText={validPincode}
+          onChange={()=> setFormEdited(true)}
         />
         </Grid>
 
         <Grid item xs={12}>
         <Button
-          type={editToggle ? "submit" : "button"}
+          type={editToggle && formEdited ? "submit" : "button"}
           variant="contained"
           onClick={() => {
             setEditToggle(!editToggle);
             setButtonText(editToggle ? "Save" : "Edit");
           }}
           style={{margin : "0 auto"}}
+          disabled={validEmail||validName||validAddress||validContact||validPincode}
         >
           {buttonText}
         </Button>
