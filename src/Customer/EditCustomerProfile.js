@@ -1,4 +1,4 @@
-import { TextField, Button, Select, MenuItem, Grid, Card, CardContent, Typography } from "@mui/material";
+import { TextField, Button, Select, MenuItem, Grid, Card, CardContent, Typography, InputLabel } from "@mui/material";
 import { useEffect, useState } from "react";
 import data from "../Assets/States.json";
 import * as cities from "../Assets/States_Cities.json";
@@ -144,6 +144,7 @@ function EditCustomerProfile({ customer }) {
         </Grid>
 
         <Grid item xs={12} sm={6}>
+        <InputLabel id="demo-simple-select-helper-label">State</InputLabel>
         <Select
           label="State"
           disabled={editToggle}
@@ -162,6 +163,7 @@ function EditCustomerProfile({ customer }) {
         </Grid>
 
         <Grid item xs={12} sm={6}>
+        <InputLabel id="demo-simple-select-helper-label">City</InputLabel>
         <Select label="City" disabled={editToggle} style={{ minWidth: 120 }} name="city" defaultValue={customer.city} onChange={()=> setFormEdited(true)}>
           {cityList.map((item) => {
             return <MenuItem value={item.city}>{item.city}</MenuItem>;
