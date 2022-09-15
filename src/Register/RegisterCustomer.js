@@ -2,6 +2,7 @@ import axios from "axios"
 import * as cities from '../Assets/States_Cities.json'
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
+import data from "../Assets/States.json";
 
 function RegisterCustomer(){
 
@@ -18,17 +19,8 @@ function RegisterCustomer(){
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    const AuthToken = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJfZW1haWwiOiJnYXVyYW5nLnMxNTNAZ21haWwuY29tIiwiYXBpX3Rva2VuIjoiY0VjQTJTRGhNUnRMQW0xWTQ1M0hhU1dhamQ0aElORHFHUnBucW5XRndDSVZFUGV2MGd4NHBBRHVCVExmTlNnVkRQdyJ9LCJleHAiOjE2NjMwNjkyOTB9.Qr42qXCDGhKVpby4PVZHRd-M0XnYbey8zWjN85r6swI";
     useEffect(()=>{
-        axios.get('https://www.universal-tutorial.com/api/states/India', {
-            headers : {
-                "Accept" : "application/json",
-                "Authorization" : AuthToken
-            }
-        }).then(response => setStateList(response.data)).catch(err=> console.log(err));
-
-        console.log(cities);
-        
+        setStateList(data["states"])
     }, [])
 
 
