@@ -2,6 +2,7 @@ import { TextField, Button, Select, MenuItem, Grid, Card, CardContent, Typograph
 import { useEffect, useState } from "react";
 import data from "../Assets/States.json";
 import * as cities from "../Assets/States_Cities.json";
+import axios from 'axios'
 
 function EditCustomerProfile({ customer }) {
   const [editToggle, setEditToggle] = useState(true);
@@ -14,6 +15,8 @@ function EditCustomerProfile({ customer }) {
   const [validContact, setValidContact] = useState("");
   const [validPincode, setValidPincode] = useState("");
   const [formEdited, setFormEdited] = useState(false);
+  const [emailEdited, setEmailEdited] = useState(false);
+  const [contactEdited, setContactEdited] = useState(false);
 
   useEffect(() => {
     setStateList(data["states"]);
@@ -29,6 +32,22 @@ function EditCustomerProfile({ customer }) {
     e.preventDefault()
     setFormEdited(false)
     console.log("form submitted")
+    
+    
+    const customerDto = {
+      customerId : customer.id,
+      name : e.target.name.value,
+      email : e.target.email.value,
+      address : e.target.address.value,
+      state : e.target.state.value,
+      city : e.target.city.value,
+      contactNo : e.target.contactNo.value,
+      pincode : e.target.pincode.value
+    }
+
+    axios.post("/edit/customer", customerDto)
+    .then(response=> {if(response.status===200) console.log("Details edited")}).catch(err => console.log(err))
+
   }
 
   return (
@@ -86,13 +105,25 @@ function EditCustomerProfile({ customer }) {
             e.preventDefault()
             if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(e.target.value)){
                 setValidEmail("Invalid Email entry")
-            }else
+            }else{
               setValidEmail("");
+              if(emailEdited){
+
+                axios.post("http://localhost:8080/edit/customer/emailExist", {email : e.target.value})
+                .then(response=> {
+                  if(response.status===200){
+                    if(customer.email !== e.target.value)
+                      setValidEmail("Email already exists")
+                  }
+                    
+                }).catch(err => {console.log(err.response); setValidEmail(""); setEmailEdited(false)})
+              }
+            }
           
           }}
           error={validEmail}
           helperText={validEmail}
-          onChange={()=> setFormEdited(true)}
+          onChange={()=> {setFormEdited(true); setEmailEdited(true)}}
         />
         </Grid>
 
@@ -111,11 +142,21 @@ function EditCustomerProfile({ customer }) {
             }
             else{
               setValidContact("");
+              if(contactEdited){
+                axios.post("http://localhost:8080/edit/customer/contactExists", {contactNo : e.target.value})
+                .then(response=> {
+                  if(response.status===200){
+                    if(customer.contactNo !== e.target.value)
+                      setValidContact("Contact already exists")
+                  }
+                    
+                }).catch(err => {console.log(err.response); setValidContact(""); setContactEdited(false)})
+              }
             }
           }}
           error={validContact}
           helperText={validContact}
-          onChange={()=> setFormEdited(true)}
+          onChange={()=> {setFormEdited(true); setContactEdited(true)}}
         />
         </Grid>
 
