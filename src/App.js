@@ -8,6 +8,7 @@ import VendorDashboard from "./Dashboard/VendorDashboard";
 import CustomerDashboard from "./Dashboard/CustomerDashboard";
 import DrawerAppBar from "./Layout/Navbar";
 import HomePage from "./HomePage";
+import ResponsiveDrawer from "./Layout/Sidebar";
 
 
 function App() {
@@ -24,7 +25,7 @@ function App() {
         <Route path="/login/customer" element={<CustomerLogin/>}/>
         <Route path="/dashboard/vendor" element={<VendorDashboard/>}/>
         <Route path="/dashboard/customer" element={<CustomerDashboard/>}/>
-        <Route path="/navbar" element={<DrawerAppBar/>}/>
+        <Route path="/sidebar" element={<ResponsiveDrawer/>}/>
       </Routes>
       
       

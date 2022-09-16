@@ -7,7 +7,7 @@ function Navbar(){
 
   return(
     <>
-    <AppBar position='static' >
+    <AppBar position='relative' style={{zIndex : 1}}>
       <Toolbar>
         <Typography variant='h6' component='div' sx={{flexGrow : 1}}>
           Website

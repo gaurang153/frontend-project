@@ -23,7 +23,7 @@ function CustomerDashboard() {
         </div>
       </div>
       <div className="row mt-4">
-        <OrderForm />
+        <OrderForm customer={customer} />
         <OrderTable />
       </div>
       <button className="btn btn-lg btn-danger my-5" onClick={logoutHandler}>

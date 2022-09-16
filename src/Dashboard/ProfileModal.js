@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import EditCustomerProfile from "../Customer/EditCustomerProfile";
+import EditCustomerProfile from "../EditProfile/EditCustomerProfile";
 
 export default function ProfileModal(props) {
   const [lgShow, setLgShow] = useState(false);

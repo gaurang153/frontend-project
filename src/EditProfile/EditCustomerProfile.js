@@ -45,7 +45,7 @@ function EditCustomerProfile({ customer }) {
       pincode : e.target.pincode.value
     }
 
-    axios.post("/edit/customer", customerDto)
+    axios.post("http://localhost:8080/edit/customer", customerDto)
     .then(response=> {if(response.status===200) console.log("Details edited")}).catch(err => console.log(err))
 
   }
