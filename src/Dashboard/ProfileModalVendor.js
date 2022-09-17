@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import EditCustomerProfile from '../EditProfile/EditCustomerProfile'
+import EditVendorProfile from '../EditProfile/EditVendorProfile'
 
-export default function ProfileModal(props) {
+export default function ProfileModalVendor(props) {
   const [lgShow, setLgShow] = useState(false);
-  const customer = JSON.parse(localStorage.getItem("customer"));
+  const vendor = JSON.parse(localStorage.getItem("authVendor"));
 
   return (
     <>
@@ -27,7 +27,7 @@ export default function ProfileModal(props) {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <EditCustomerProfile customer={customer}/> 
+          <EditVendorProfile vendor={vendor}/> 
         </Modal.Body>
       </Modal>
     </>

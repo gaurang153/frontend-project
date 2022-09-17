@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Sidebar from "../Layout/Sidebar";
+import RequestTable from "./UI/RequestTable";
 import ServiceTabs from "./UI/ServiceTabs";
-import HomePage from "../HomePage";
 
 function VendorDashboard() {
   const vendor = JSON.parse(localStorage.getItem("authVendor"));
@@ -15,13 +15,19 @@ function VendorDashboard() {
         </div>
         <div className="col-md-10">
           {renderComponant === "completed" ? (
-            <ServiceTabs data={vendor.services} table={"completed"} />
+            <ServiceTabs
+              data={vendor.services}
+              renderComponant={renderComponant}
+            />
           ) : renderComponant === "pending" ? (
-            <ServiceTabs data={vendor.services} table={"pending"} />
+            <ServiceTabs
+              data={vendor.services}
+              renderComponant={renderComponant}
+            />
           ) : renderComponant === "request" ? (
-            <ServiceTabs data={vendor.services} table={"request"} />
+            <RequestTable />
           ) : (
-            <ServiceTabs data={vendor.services} table={"request"} />
+            <RequestTable />
           )}
         </div>
       </div>

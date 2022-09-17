@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import LogoutButton from "../Login/LogoutButton";
 import OrderForm from "./OrderForm";
 import OrderTable from "./OrderTable";
 import ProfileModal from "./ProfileModal";
@@ -7,6 +8,7 @@ function CustomerDashboard() {
   const navigate = useNavigate();
   function logoutHandler() {
     localStorage.removeItem("customer");
+    localStorage.clear();
     navigate("/");
   }
 
@@ -26,9 +28,7 @@ function CustomerDashboard() {
         <OrderForm customer={customer} />
         <OrderTable />
       </div>
-      <button className="btn btn-lg btn-danger my-5" onClick={logoutHandler}>
-        Logout
-      </button>
+      <LogoutButton/>
     </div>
   );
 }

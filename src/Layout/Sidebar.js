@@ -1,9 +1,13 @@
 import { Divider, Drawer, List, ListItem, ListItemButton, ListItemText, Toolbar } from "@mui/material";
-import ProfileModal from "../Dashboard/ProfileModal";
+import { useState } from "react";
+import ProfileModalVendor from "../Dashboard/ProfileModalVendor";
+import LogoutButton from "../Login/LogoutButton";
 
 
 function Sidebar({ setRenderComponant }){
     const vendor = JSON.parse(localStorage.getItem("authVendor"));
+    const [selectedComponant, setSelectedComponant] = useState("request");
+
     return(
         <div>
             
@@ -14,23 +18,26 @@ function Sidebar({ setRenderComponant }){
             <Toolbar/>
                 <List>
                     <ListItem>
-                    <ProfileModal title={vendor.name} />
+                    <ProfileModalVendor title={vendor.name} />
                     </ListItem>
                     <Divider/>
                     <ListItem>
-                        <ListItemButton onClick={()=> setRenderComponant("completed")}>
+                        <ListItemButton onClick={()=> {setRenderComponant("completed"); setSelectedComponant("completed")}} selected={selectedComponant==="completed"}>
                             <ListItemText>Completed</ListItemText>
                         </ListItemButton>
                     </ListItem>
                     <ListItem>
-                        <ListItemButton onClick={()=> setRenderComponant("pending")}>
+                        <ListItemButton onClick={()=> {setRenderComponant("pending"); setSelectedComponant("pending")}} selected={selectedComponant==="pending"}>
                             <ListItemText>Pending</ListItemText>
                         </ListItemButton>
                     </ListItem>
                     <ListItem>
-                        <ListItemButton onClick={()=> setRenderComponant("request")}>
+                        <ListItemButton onClick={()=> {setRenderComponant("request"); setSelectedComponant("request")}} selected={selectedComponant==="request"}>
                             <ListItemText>Request</ListItemText>
                         </ListItemButton>
+                    </ListItem>
+                    <ListItem>
+                        <LogoutButton/>
                     </ListItem>
                 </List>
             </Drawer>
