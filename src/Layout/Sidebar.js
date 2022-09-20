@@ -11,7 +11,7 @@ function Sidebar({ setRenderComponant }){
     return(
         <div>
             
-            <Drawer anchor="left" open={true} hideBackdrop style={{position:"relative", zIndex:0}} sx={{
+            <Drawer disableEnforceFocus anchor="left" open={true} hideBackdrop style={{position:"relative", zIndex:0}} sx={{
             display: { xs: 'none', sm: 'block' },
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 240 },
           }}>

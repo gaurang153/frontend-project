@@ -63,7 +63,7 @@ function PendingTable(props) {
               <td>{order.customer.address}</td>
               <td>{order.customer.contactNo}</td>
               <td>{order.finalAmount}</td>
-              <td>{order.customer.orderFinalizedTime}</td>
+              <td>{order.orderFinalizedTime}</td>
             </tr>
           );
         })}

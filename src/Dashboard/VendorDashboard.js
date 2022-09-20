@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Sidebar from "../Layout/Sidebar";
 import ServiceTabs from "./UI/ServiceTabs";
-import HomePage from "../HomePage";
 
 function VendorDashboard() {
   const vendor = JSON.parse(localStorage.getItem("authVendor"));

@@ -1,16 +1,9 @@
-import { useNavigate } from "react-router-dom";
 import LogoutButton from "../Login/LogoutButton";
 import OrderForm from "./OrderForm";
 import OrderTable from "./OrderTable";
 import ProfileModal from "./ProfileModal";
 
 function CustomerDashboard() {
-  const navigate = useNavigate();
-  function logoutHandler() {
-    localStorage.removeItem("customer");
-    localStorage.clear();
-    navigate("/");
-  }
 
   if (!localStorage.getItem("customer")) {
     return <h1>Please Login</h1>;

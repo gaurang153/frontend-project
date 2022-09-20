@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import axios from "axios";
 import Timer from "./Timer";
+import BiddingModal from "../BiddingModal";
 
 function RequestTable(props) {
   const [orders, setOrders] = useState([]);
+
   const data = {
     city: JSON.parse(localStorage.getItem("authVendor")).city,
     serviceType: props.service.serviceType,
@@ -58,6 +60,7 @@ function RequestTable(props) {
           <th>Active Bids</th>
           <th>Current Minimum Bid</th>
           <th>Time Remaining</th>
+          <th>Bid</th>
         </tr>
       </thead>
       <tbody>
@@ -72,6 +75,7 @@ function RequestTable(props) {
               <td>
                 <Timer minutes={order.lockoutTimeInMinutes} />
               </td>
+              <td><BiddingModal order={order}/></td>
             </tr>
           );
         })}

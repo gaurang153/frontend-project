@@ -51,7 +51,7 @@ function RegisterVendor(){
         }
 
         axios.post("http://localhost:8080/reg/vendor", vendor).then(function (response) {
-             if(response.status === 200)
+             if(response.status === 201)
                 navigate("/login/vendor")
           })
           .catch(function (error) {

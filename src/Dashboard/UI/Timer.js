@@ -15,6 +15,7 @@ const renderer = ({ hours, minutes, seconds, completed }) => {
   } else {
     // Render a countdown
     return (
+      <>
       <span
         className={
           hours === 0 && minutes === 0 ? "text-warning" : "text-success"
@@ -24,6 +25,7 @@ const renderer = ({ hours, minutes, seconds, completed }) => {
           {hours}:{minutes}:{seconds}
         </strong>
       </span>
+      </>
     );
   }
 };

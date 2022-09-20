@@ -38,8 +38,8 @@ function RegisterCustomer(){
         }
 
         axios.post("http://localhost:8080/reg/customer", customer).then(function (response) {
-            if(response.status === 200)
-                navigate("/login/vendor")
+            if(response.status === 201)
+                navigate("/login/customer")
           })
           .catch(function (error) {
             console.log(error);
