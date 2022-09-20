@@ -4,107 +4,74 @@ import { Button, Grid } from "@mui/material";
 import Timer from "./UI/Timer";
 import axios from "axios";
 
-const DynamicBiddingPage = ({ orderId }) => {
+const DynamicBiddingPage = ({ orderId, lockoutTimeInMinutes }) => {
   const [order, setOrder] = useState({});
   const [row, setRow] = useState([]);
 
-  const rows = [
-    {
-      id: 1,
-      vendorName: "vendor",
-      vendorRating: "4.8",
-      vendorComments: "Kaam hojayga",
-      bidPlaceTime: "18/09/2022 12:00:00",
-      bidAmount: "400",
-    },
-    {
-      id: 2,
-      vendorName: "vendor",
-      vendorRating: "4.8",
-      vendorComments: "Kaam hojayga",
-      bidPlaceTime: "18/09/2022 12:00:00",
-      bidAmount: "550",
-    },
-    {
-      id: 3,
-      vendorName: "vendor",
-      vendorRating: "4.8",
-      vendorComments: "Kaam hojayga",
-      bidPlaceTime: "18/09/2022 12:00:00",
-      bidAmount: "570",
-    },
-    {
-      id: 4,
-      vendorName: "vendor",
-      vendorRating: "4.8",
-      vendorComments: "Kaam hojayga",
-      bidPlaceTime: "18/09/2022 12:00:00",
-      bidAmount: "300",
-    },
-  ];
-
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/order/getbiddetails/" + orderId, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        setRow(
-          response.data.map((bid) => {
-            return {
-              id: bid.id,
-              vendorName: bid.vendor.name,
-              vendorRating: bid.vendor.rating,
-              vendorComments: bid.vendorComments,
-              bidPlacedTime: bid.bidPlacedTime,
-              bidAmount: bid.bidAmount,
-            };
+    // axios
+    //   .get("http://localhost:8080/order/getbiddetails/" + orderId, {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //   })
+    //   .then((response) => {
+    //     setRow(
+    //       response.data.map((bid) => {
+    //         return {
+    //           id: bid.id,
+    //           vendorName: bid.vendor.name,
+    //           vendorRating: bid.vendor.rating,
+    //           vendorComments: bid.vendorComments,
+    //           bidPlacedTime: bid.bidPlacedTime,
+    //           bidAmount: bid.bidAmount,
+    //         };
+    //       })
+    //     );
+    //   });
+
+    // axios
+    //   .get("http://localhost:8080/order/" + orderId, {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //   })
+    //   .then((response) => setOrder(response.data))
+    //   .catch((err) => console.log(err));
+
+      const func = () => {
+        axios
+          .get("http://localhost:8080/order/" + orderId, {
+            headers: {
+              "Content-Type": "application/json",
+            },
           })
-        );
-      });
+          .then((response) => setOrder(response.data))
+          .catch((err) => console.log(err));
+  
+        axios
+          .get("http://localhost:8080/order/getbiddetails/" + orderId, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+          .then((response) => {
+            setRow(
+              response.data.map((bid) => {
+                return {
+                  id: bid.id,
+                  vendorName: bid.vendor.name,
+                  vendorRating: bid.vendor.rating,
+                  vendorComments: bid.vendorComments,
+                  bidPlacedTime: bid.bidPlacedTime,
+                  bidAmount: bid.bidAmount,
+                };
+              })
+            );
+          });
+      }
 
-    axios
-      .get("http://localhost:8080/order/" + orderId, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => setOrder(response.data))
-      .catch((err) => console.log(err));
-
-    var intervalId = setInterval(() => {
-      axios
-        .get("http://localhost:8080/order/" + orderId, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        .then((response) => setOrder(response.data))
-        .catch((err) => console.log(err));
-
-      axios
-        .get("http://localhost:8080/order/getbiddetails/" + orderId, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        .then((response) => {
-          setRow(
-            response.data.map((bid) => {
-              return {
-                id: bid.id,
-                vendorName: bid.vendor.name,
-                vendorRating: bid.vendor.rating,
-                vendorComments: bid.vendorComments,
-                bidPlacedTime: bid.bidPlacedTime,
-                bidAmount: bid.bidAmount,
-              };
-            })
-          );
-        });
-    }, 60 * 1000);
+    var intervalId = setInterval(func(), 60 * 1000);
 
     return () => clearInterval(intervalId);
   }, []);
@@ -117,15 +84,19 @@ const DynamicBiddingPage = ({ orderId }) => {
     { field: "bidAmount", headerName: "Bid Amount", flex: 0.5 },
   ];
 
+  console.log(order)
+
   return (
     <div className="container-fluid mb-3">
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={11}>
+        <Grid item xs={12} sm={8}>
+        
           <h5>Order Description: </h5>
           <h6>{order.customerComments}</h6>
         </Grid>
-        <Grid item xs={12} sm={1} alignSelf={"end"}>
-          <Timer minutes={order.lockoutTimeInMinutes} />
+        
+        <Grid item xs={12} sm={4}>
+        <Timer minutes={lockoutTimeInMinutes} /> 
         </Grid>
         <Grid item xs={12} sx={{ marginBottom: 1 }}>
           <DataGrid
@@ -163,11 +134,13 @@ const DynamicBiddingPage = ({ orderId }) => {
                 })
                 .catch((err) => console.log(err))
             }
+            disabled={lockoutTimeInMinutes === 0}
           >
             I'm Out
           </Button>
         </Grid>
       </Grid>
+      
     </div>
   );
 };

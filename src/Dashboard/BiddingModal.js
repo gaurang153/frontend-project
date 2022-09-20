@@ -21,8 +21,8 @@ const BiddingModal = ({ order }) => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <DynamicBiddingPage orderId={order.id}/>
-                <PlaceBidForm orderId={order.id}/>
+                <DynamicBiddingPage orderId={order.id} lockoutTimeInMinutes={order.lockoutTimeInMinutes} displayBidding={displayBidding}/>
+                <PlaceBidForm orderId={order.id} lockoutTimeInMinutes={order.lockoutTimeInMinutes}/>
             </Modal.Body>
         </Modal>
     </>

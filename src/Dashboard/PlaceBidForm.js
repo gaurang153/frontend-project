@@ -1,7 +1,7 @@
 import { Button, Grid, TextareaAutosize, TextField } from '@mui/material'
 import axios from 'axios';
 
-function PlaceBidForm({ orderId }){
+function PlaceBidForm({ orderId, lockoutTimeInMinutes }){
 
 
     function handleSubmit(e){
@@ -28,7 +28,7 @@ function PlaceBidForm({ orderId }){
                 <TextareaAutosize id={"vendorComments"+orderId} name={"vendorComments"+orderId} placeholder='vendor Comments' minRows="3" style={{ width: "90%" }} />
             </Grid>
             <Grid item xs={12} sm={2}>
-                <Button variant='contained' id={"submitBtn"+orderId} name={"submitBtn"+orderId} type='submit' color='primary'>Place Bid</Button>
+                <Button variant='contained' id={"submitBtn"+orderId} name={"submitBtn"+orderId} type='submit' color='primary' disabled={lockoutTimeInMinutes === 0}>Place Bid</Button>
             </Grid>
             </Grid>
             </form>
