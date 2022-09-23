@@ -22,7 +22,6 @@ function Navbar(){
 
       </Toolbar>
     </AppBar>
-    <div className='row mb-5'></div>
     </>
   )
 }

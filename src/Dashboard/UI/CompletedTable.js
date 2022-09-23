@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
@@ -6,15 +6,12 @@ import Spinner from "react-bootstrap/Spinner";
 function CompletedTable(props) {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const tableRef = useRef(null);
   const data = {
     vendorId: JSON.parse(localStorage.getItem("authVendor")).id,
     serviceType: props.service.serviceType,
   };
   useEffect(() => {
-    if(tableRef.current){
-      tableRef.current.focus();
-    }
+    
     console.log(data)
     axios
       .post("http://localhost:8080/order/completed", data, {
@@ -43,7 +40,7 @@ function CompletedTable(props) {
   }
 
   return (
-    <Table striped bordered hover ref={tableRef}>
+    <Table striped bordered hover>
       <thead>
         <tr>
           <th>Customer Name</th>

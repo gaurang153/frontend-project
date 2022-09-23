@@ -1,9 +1,13 @@
-import LogoutButton from "../Login/LogoutButton";
+import CustomerSidebar from "../Layout/CustomerSidebar";
 import OrderForm from "./OrderForm";
-import OrderTable from "./OrderTable";
-import ProfileModal from "./ProfileModal";
+import { useState } from 'react'
+import CustomerCompletedTable from "./UI/CustomerCompletedTable";
+import ActiveOrderTable from "./UI/ActiveOrderTable";
+import CustomerPendingTable from "./UI/CustomerPendingTable";
 
 function CustomerDashboard() {
+
+  const [renderComponant, setRenderComponant] = useState("placeOrder");
 
   if (!localStorage.getItem("customer")) {
     return <h1>Please Login</h1>;
@@ -11,17 +15,17 @@ function CustomerDashboard() {
   const customer = JSON.parse(localStorage.getItem("customer"));
   console.log(customer);
   return (
-    <div className="container">
-      <div class="d-flex flex-row-reverse bd-highlight">
-        <div class="p-2 bd-highlight">
-          <ProfileModal title={customer.name} />
+    <div className="container-fluid">
+      <div class="row">
+        <div class="col-md-2">
+          <CustomerSidebar setRenderComponant={setRenderComponant} renderComponant={renderComponant}/>
         </div>
+        <div className="col-md-10">
+          {renderComponant === "placeOrder" ? <OrderForm customer={customer} /> : renderComponant === "completed" ? <CustomerCompletedTable customerId={customer.id}/> : renderComponant === "activeOrders" ? <ActiveOrderTable customerId={customer.id} setRenderComponant={setRenderComponant}/> : renderComponant === "pending" ? <CustomerPendingTable customerId={customer.id}/> : <OrderForm customer={customer} />}
+        
       </div>
-      <div className="row mt-4">
-        <OrderForm customer={customer} />
-        <OrderTable />
       </div>
-      <LogoutButton/>
+      
     </div>
   );
 }

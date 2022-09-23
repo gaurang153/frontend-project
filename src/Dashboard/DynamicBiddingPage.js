@@ -3,6 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Button, Grid } from "@mui/material";
 import Timer from "./UI/Timer";
 import axios from "axios";
+import Rating from "@mui/material/Rating";
 
 const DynamicBiddingPage = ({ orderId, lockoutTimeInMinutes }) => {
   const [order, setOrder] = useState({});
@@ -39,64 +40,73 @@ const DynamicBiddingPage = ({ orderId, lockoutTimeInMinutes }) => {
     //   .then((response) => setOrder(response.data))
     //   .catch((err) => console.log(err));
 
-      const func = () => {
-        axios
-          .get("http://localhost:8080/order/" + orderId, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-          .then((response) => setOrder(response.data))
-          .catch((err) => console.log(err));
-  
-        axios
-          .get("http://localhost:8080/order/getbiddetails/" + orderId, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-          .then((response) => {
-            setRow(
-              response.data.map((bid) => {
-                return {
-                  id: bid.id,
-                  vendorName: bid.vendor.name,
-                  vendorRating: bid.vendor.rating,
-                  vendorComments: bid.vendorComments,
-                  bidPlacedTime: bid.bidPlacedTime,
-                  bidAmount: bid.bidAmount,
-                };
-              })
-            );
-          });
-      }
+    const func = () => {
+      axios
+        .get("http://localhost:8080/order/" + orderId, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => setOrder(response.data))
+        .catch((err) => console.log(err));
+
+      axios
+        .get("http://localhost:8080/order/getbiddetails/" + orderId, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          setRow(
+            response.data.map((bid) => {
+              return {
+                id: bid.id,
+                vendorName: bid.vendor.name,
+                vendorRating: bid.vendor.rating,
+                vendorComments: bid.vendorComments,
+                bidPlacedTime: bid.bidPlacedTime,
+                bidAmount: bid.bidAmount,
+              };
+            })
+          );
+        });
+    };
 
     var intervalId = setInterval(func(), 60 * 1000);
 
     return () => clearInterval(intervalId);
   }, []);
 
+  const RenderRating = (props) => {
+    const { value } = props;
+    return <Rating name="read-only" value={value} precision={0.5} readOnly />;
+  };
+
   const columns = [
     { field: "vendorName", headerName: "Vendor Name", flex: 0.5 },
-    { field: "vendorRating", headerName: "Vendor Rating", flex: 0.5 },
+    {
+      field: "vendorRating",
+      headerName: "Vendor Rating",
+      flex: 0.5,
+      renderCell: RenderRating,
+    },
     { field: "vendorComments", headerName: "Vendor Comments", flex: 1 },
     { field: "bidPlacedTime", headerName: "Bid Placed Time", flex: 0.5 },
     { field: "bidAmount", headerName: "Bid Amount", flex: 0.5 },
   ];
 
-  console.log(order)
+  console.log(order);
 
   return (
     <div className="container-fluid mb-3">
       <Grid container spacing={3}>
         <Grid item xs={12} sm={8}>
-        
           <h5>Order Description: </h5>
           <h6>{order.customerComments}</h6>
         </Grid>
-        
+
         <Grid item xs={12} sm={4}>
-        <Timer minutes={lockoutTimeInMinutes} /> 
+          <Timer minutes={lockoutTimeInMinutes} />
         </Grid>
         <Grid item xs={12} sx={{ marginBottom: 1 }}>
           <DataGrid
@@ -140,7 +150,6 @@ const DynamicBiddingPage = ({ orderId, lockoutTimeInMinutes }) => {
           </Button>
         </Grid>
       </Grid>
-      
     </div>
   );
 };

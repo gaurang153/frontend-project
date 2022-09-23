@@ -6,7 +6,6 @@ import VendorLogin from "./Login/VendorLogin";
 import CustomerLogin from "./Login/CustomerLogin";
 import VendorDashboard from "./Dashboard/VendorDashboard";
 import CustomerDashboard from "./Dashboard/CustomerDashboard";
-import DrawerAppBar from "./Layout/Navbar";
 import HomePage from "./HomePage";
 import ResponsiveDrawer from "./Layout/Sidebar";
 
